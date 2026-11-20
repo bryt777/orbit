@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090b12">
+  <title>BRYT • Instagram Username Checker</title>
+  <style>
+    :root{color-scheme:dark;--bg:#090b12;--panel:#111522;--panel2:#171d2d;--line:#252d40;--muted:#929bb0;--text:#f4f6fb;--green:#79f2b1;--blue:#8aa7ff;--red:#ff8b9a;--amber:#ffd27a}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% -10%,#1c2844 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+    .wrap{max-width:1050px;margin:auto;padding:28px 18px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:30px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.13em}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#8aa7ff,#79f2b1);display:grid;place-items:center;color:#081018;font-weight:950;letter-spacing:0}
+    .pill{border:1px solid var(--line);color:var(--muted);padding:7px 11px;border-radius:99px;font-size:12px}
+    h1{font-size:clamp(30px,6vw,50px);line-height:1.06;letter-spacing:-.045em;margin:0 0 12px}.grad{background:linear-gradient(90deg,#fff,#a6bcff 55%,#79f2b1);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .sub{color:var(--muted);max-width:650px;margin:0 0 25px}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .card{background:linear-gradient(180deg,rgba(23,29,45,.96),rgba(15,19,30,.96));border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 18px 60px #0003}
+    .card h2{font-size:15px;margin:0 0 15px;letter-spacing:.02em}.field{display:grid;gap:7px;margin:12px 0}.field label{font-size:12px;color:var(--muted)}
+    input,select{width:100%;background:#0b0f19;border:1px solid #303a51;border-radius:11px;padding:12px 13px;color:var(--text);font:inherit;outline:none}
+    input:focus,select:focus{border-color:#8aa7ff;box-shadow:0 0 0 3px #8aa7ff20}
+    .row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.btn{border:0;border-radius:11px;padding:12px 15px;font:700 14px inherit;cursor:pointer;transition:.15s}
+    .primary{background:linear-gradient(100deg,#8aa7ff,#79f2b1);color:#081018}.secondary{background:#222b40;color:var(--text);border:1px solid #35415a}.danger{background:#3b202a;color:#ffb5bf;border:1px solid #693441}
+    .btn:disabled{opacity:.45;cursor:not-allowed}.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.07)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.stat{background:#0b0f19;border:1px solid var(--line);border-radius:13px;padding:12px}.stat b{font-size:23px;display:block}.stat span{color:var(--muted);font-size:11px}
+    .status{margin-top:14px;background:#0b0f19;border:1px solid var(--line);border-radius:12px;padding:11px 12px;color:var(--muted);font-size:13px;min-height:44px}
+    .listhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.results{display:grid;gap:8px;max-height:490px;overflow:auto}
+    .item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0b0f19;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+    .uname{font-weight:750;letter-spacing:.03em}.tag{font-size:11px;border-radius:99px;padding:4px 8px;white-space:nowrap}.possible{background:#2d2818;color:var(--amber)}.taken{background:#20283a;color:#a9baff}.unknown{background:#30212a;color:#ffb5bf}.sent{color:var(--green);font-size:11px}
+    .notice{margin-top:16px;padding:13px 14px;border:1px solid #5b4828;background:#211c12;color:#d9c49b;border-radius:13px;font-size:12px}
+    .hidden{display:none!important}.footer{color:#68738a;text-align:center;font-size:11px;margin-top:24px}
+    .modal{position:fixed;inset:0;background:#05070bdc;display:grid;place-items:center;padding:18px;z-index:10}.modalbox{width:min(420px,100%);background:#141a29;border:1px solid var(--line);padding:23px;border-radius:18px}.modalbox h2{margin:0 0 5px}.modalbox p{color:var(--muted);font-size:13px;margin:0 0 14px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:20px 13px 40px}.card{padding:16px}.top{margin-bottom:25px}.stats{gap:7px}.stat{padding:10px}.stat b{font-size:20px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand"><div class="logo">B</div><span>BRYT LABS</span></div>
+      <div class="pill" id="connection">● Dashboard ready</div>
+    </header>
+
+    <h1><span class="grad">Instagram Username</span><br>Generator & Checker</h1>
+    <p class="sub">Generate five-character username ideas, check public profile responses carefully, and send possible candidates to your Telegram bot.</p>
+
+    <main class="grid">
+      <section class="card">
+        <h2>⚙️ GENERATOR SETTINGS</h2>
+        <div class="field">
+          <label for="style">Generation style</label>
+          <select id="style">
+            <option value="mixed">Mixed</option><option value="numeric">Numeric</option>
+            <option value="letters">Letters</option><option value="pronounceable">Pronounceable</option>
+            <option value="leet">Leet</option><option value="lookalike">Lookalike</option>
+            <option value="all" selected>All styles (weighted)</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="field"><label for="count">Candidates per run</label><input id="count" type="number" min="1" max="30" value="10"></div>
+          <div class="field"><label for="delay">Delay between checks (seconds)</label><input id="delay" type="number" min="10" max="120" value="15"></div>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="start">Start checking</button>
+          <button class="btn danger" id="stop" disabled>Stop</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="checked">0</b><span>CHECKED</span></div>
+          <div class="stat"><b id="possible">0</b><span>NOT FOUND*</span></div>
+          <div class="stat"><b id="taken">0</b><span>TAKEN</span></div>
+        </div>
+        <div class="status" id="status">Enter your panel password to unlock the checker.</div>
+        <div class="notice">*“Not found” is only a possible candidate, not proof that Instagram will let you register it. Instagram may return login walls, blocks, or misleading responses. Verify manually in Instagram.</div>
+      </section>
+
+      <section class="card">
+        <div class="listhead"><h2 style="margin:0">📋 RESULTS</h2><button class="btn secondary" id="download">Download TXT</button></div>
+        <div class="results" id="results"><div class="status">No results yet. Start a run to see candidates here.</div></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn secondary" id="copy">Copy candidates</button>
+          <button class="btn secondary" id="clear">Clear history</button>
+        </div>
+      </section>
+    </main>
+    <div class="footer">BRYT USERNAME CHECKER • Use responsibly • No Instagram login or password required</div>
+  </div>
+
+  <div class="modal" id="login">
+    <div class="modalbox">
+      <h2>Unlock your dashboard</h2>
+      <p>Enter the panel password you set in Vercel Environment Variables.</p>
+      <div class="field"><label for="password">Panel password</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter panel password"></div>
+      <button class="btn primary" id="loginBtn" style="width:100%">Unlock</button>
+      <div class="status" id="loginStatus">Your password is checked securely by the server.</div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+let running = false, checked = 0, possible = 0, taken = 0;
+let history = JSON.parse(localStorage.getItem("brytResults") || "[]");
+let stopped = false;
+
+function render(){
+  $("checked").textContent=checked; $("possible").textContent=possible; $("taken").textContent=taken;
+  $("results").innerHTML = history.length ? history.slice().reverse().map(x => `
+    <div class="item"><span class="uname">@${escapeHtml(x.username)}</span>
+    <span class="tag ${x.status === "not_found" ? "possible" : x.status === "taken" ? "taken" : "unknown"}">${x.status === "not_found" ? "NOT FOUND · VERIFY" : x.status.toUpperCase().replace("_"," ")}</span></div>`).join("") : '<div class="status">No results yet.</div>';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function save(){localStorage.setItem("brytResults",JSON.stringify(history));render();}
+function randomFrom(s){return s[Math.floor(Math.random()*s.length)];}
+function generate(style){
+  if(style==="all") style=randomFrom(["mixed","numeric","letters","pronounceable","leet","lookalike","lookalike","lookalike"]);
+  const chars="abcdefghijklmnopqrstuvwxyz", digits="01345789";
+  if(style==="mixed") return Array.from({length:5},()=>randomFrom(chars+digits)).join("");
+  if(style==="numeric") return Array.from({length:5},()=>randomFrom(digits)).join("");
+  if(style==="letters") return Array.from({length:5},()=>randomFrom(chars)).join("");
+  if(style==="pronounceable"){const c="bcdfghjklmnpqrstvwxyz",v="aeiou";return randomFrom(c)+randomFrom(v)+randomFrom(c)+randomFrom(v)+randomFrom(c);}
+  if(style==="lookalike"){const c="il1t",e="aeoxv";const p=[
+    ()=>Array.from({length:5},()=>randomFrom(c)).join(""),
+    ()=>Array.from({length:5},()=>randomFrom(c+e)).join(""),
+    ()=>randomFrom("il1")+Array.from({length:4},()=>randomFrom(c+e)).join(""),
+    ()=>Array.from({length:3},()=>randomFrom(c)).join("")+randomFrom(e)+randomFrom(c),
+    ()=>Array.from({length:5},()=>randomFrom(c+e)).join("")
+  ];return randomFrom(p)();}
+  const base=Array.from({length:5},()=>randomFrom("aeiostl")).join("");
+  const subs={e:"3",i:"1",o:"0",s:"5",t:"7"};
+  return [...base].map(x=>Math.random()<.5?(subs[x]||x):x).join("");
+}
+async function api(path,body){
+  const r=await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const data=await r.json().catch(()=>({error:"Invalid server response"}));
+  if(!r.ok) throw new Error(data.error || `Request failed (${r.status})`);
+  return data;
+}
+async function unlock(){
+  $("loginBtn").disabled=true; $("loginStatus").textContent="Checking…";
+  try{
+    await api("/api/login",{password:$("password").value});
+    $("login").classList.add("hidden"); $("connection").textContent="● Secure session active";
+    $("status").textContent="Ready. Start a small batch; checks are deliberately spaced out.";
+  }catch(e){$("loginStatus").textContent=e.message;}
+  finally{$("loginBtn").disabled=false;}
+}
+$("loginBtn").addEventListener("click",unlock);
+$("password").addEventListener("keydown",e=>{if(e.key==="Enter")unlock();});
+$("start").addEventListener("click",run);
+$("stop").addEventListener("click",()=>{stopped=true;$("status").textContent="Stopping after the current request…";});
+async function run(){
+  if(running)return;
+  const count=Math.max(1,Math.min(30,Number($("count").value)||10));
+  const delay=Math.max(10,Math.min(120,Number($("delay").value)||15))*1000;
+  running=true;stopped=false;$("start").disabled=true;$("stop").disabled=false;
+  let done=0;
+  try{
+    while(done<count&&!stopped){
+      let name=generate($("style").value);
+      if(history.some(x=>x.username===name)) continue;
+      $("status").textContent=`Checking @${name} (${done+1}/${count})…`;
+      let result;
+      try{result=await api("/api/check",{username:name});}
+      catch(e){$("status").textContent=`Temporary error: ${e.message}. Retrying the same candidate in 20 seconds…`;await new Promise(r=>setTimeout(r,20000));if(stopped)break;continue;}
+      checked++;done++;
+      if(result.status==="not_found"){possible++;}
+      else if(result.status==="taken")taken++;
+      history.push({username:name,status:result.status,time:new Date().toISOString()});
+      save();
+      $("status").textContent=result.message+(result.telegram_sent?" · Telegram notified":"");
+      if(result.status==="rate_limited"){stopped=true;break;}
+      if(done<count&&!stopped) await new Promise(r=>setTimeout(r,delay));
+    }
+  }finally{
+    running=false;$("start").disabled=false;$("stop").disabled=true;
+    if(stopped)$("status").textContent="Stopped. Your results are saved in this browser.";
+    else $("status").textContent=`Batch finished. ${done} candidate(s) processed.`;
+  }
+}
+$("download").addEventListener("click",()=>{
+  const text=history.map(x=>`@${x.username} - ${x.status} - ${x.time}`).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/plain"}));a.download="bryt-results.txt";a.click();URL.revokeObjectURL(a.href);
+});
+$("copy").addEventListener("click",async()=>{
+  const text=history.filter(x=>x.status==="not_found").map(x=>"@"+x.username).join("\n");
+  try{await navigator.clipboard.writeText(text);$("status").textContent="Possible candidates copied.";}catch(e){$("status").textContent="Clipboard unavailable in this browser.";}
+});
+$("clear").addEventListener("click",()=>{if(confirm("Clear all saved results in this browser?")){history=[];save();}});
+render();
+</script>
+</body>
+</html>
